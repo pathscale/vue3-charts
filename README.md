@@ -10,8 +10,7 @@
 </p>
 
 
-[![npm version](https://badge.fury.io/js/@pathscale/vue3-charts.svg)](https://badge.fury.io/js/@pathscale/vue3-charts)
-![npm](https://img.shields.io/npm/dw/@pathscale/vue3-charts)
+[![npm version](https://badge.fury.io/js/%40pathscale%2Fvue3-charts.svg)](https://badge.fury.io/js/%40pathscale%2Fvue3-charts)
 
 This is a simple package to get using Frappe Charts within VueJS
 

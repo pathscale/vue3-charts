@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/JustSteveKing/vue3-charts.git"
+    "url": "git+https://github.com/pathscale/vue3-charts.git"
   },
   "author": "Steve McDougall <juststevemcd@gmail.com>",
   "license": "MIT",
@@ -14,9 +14,9 @@
     "frappe-charts": "^1.5.2"
   },
   "bugs": {
-    "url": "https://github.com/JustSteveKing/vue3-charts/issues"
+    "url": "https://github.com/pathscale/vue3-charts/issues"
   },
-  "homepage": "https://github.com/JustSteveKing/vue3-charts#readme",
+  "homepage": "https://github.com/pathscale/vue3-charts#readme",
   "directories": {
     "example": "examples"
   },
