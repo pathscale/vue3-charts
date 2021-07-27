@@ -1,13 +1,16 @@
 <template>
-  <div :id="this.id"></div>
+  <div :id="id" />
 </template>
 
 <script>
+import { onMounted, reactive, watch } from "vue";
+
 import { Chart } from "frappe-charts/dist/frappe-charts.min.esm";
 
 let updateTimer;
 
 export default {
+  name: "Chart",
   props: {
     id: {
       required: true,
@@ -38,7 +41,7 @@ export default {
     },
 
     dataPoints: {
-      required: false
+      required: false,
     },
 
     countLabel: {
@@ -97,7 +100,7 @@ export default {
     lineOptions: {
       required: false,
       type: Object,
-      default: () => {
+      default() {
         return {
           dotSize: 4,
           hideLine: 0,
@@ -112,7 +115,7 @@ export default {
     axisOptions: {
       required: false,
       type: Object,
-      default: () => {
+      default() {
         return {
           yAxisMode: "",
           xAxisMode: "",
@@ -136,7 +139,7 @@ export default {
     barOptions: {
       required: false,
       type: Object,
-      default: () => {
+      default() {
         return {
           height: 20,
           depth: 2,
@@ -155,124 +158,115 @@ export default {
     tooltipOptions: {
       required: false,
       type: Object,
-      default: () => {
+      default() {
         return {
-          formatTooltipX: (d) => (d + "").toUpperCase(),
+          formatTooltipX: (d) => String(d).toUpperCase(),
           formatTooltipY: (d) => d + " pts",
         };
       },
     },
   },
 
-  data() {
-    return {
+  setup(props) {
+    const state = reactive({
       chart: null,
       data: {
-        labels: this.labels,
-        datasets: this.dataSets,
-        yMarkers: this.yMarkers,
-        yRegions: this.yRegions,
+        labels: props.labels,
+        datasets: props.dataSets,
+        yMarkers: props.yMarkers,
+        yRegions: props.yRegions,
       },
       heatmapData: {
-        dataPoints: this.dataPoints,
-        start: this.startDate,
-        end: this.endDate,
-        countLabel: this.countLabel,
+        dataPoints: props.dataPoints,
+        start: props.startDate,
+        end: props.endDate,
+        countLabel: props.countLabel,
       },
-    };
-  },
+    });
 
-  watch: {
-    labels() {
-      this.updateDebounced();
-    },
-    dataSets() {
-      this.updateDebounced();
-    },
-    yMarkers() {
-      this.updateDebounced();
-    },
-    yRegions() {
-      this.updateDebounced();
-    },
-  },
+    watch(
+      () => [props.labels, props.dataSets, props.yMarkers, props.yRegions],
+      () => {
+        updateDebounced();
+      }
+    );
 
-  mounted() {
-    this.startChart();
-  },
+    onMounted(() => {
+      startChart();
+    });
 
-  methods: {
-    startChart() {
+    function startChart() {
       const baseOptions = {
-        type: this.type,
-        discreteDomains: this.discreteDomains,
-        colors: this.colors,
-        height: this.height,
-        title: this.title,
-        isNavigable: this.isNavigable,
+        type: props.type,
+        discreteDomains: props.discreteDomains,
+        colors: props.colors,
+        height: props.height,
+        title: props.title,
+        isNavigable: props.isNavigable,
       };
 
       const heatMapOptions = {
-        data: this.heatmapData,
+        data: props.heatmapData,
       };
 
       const chartOptions = {
-        data: this.data,
-        tooltipOptions: this.tooltipOptions,
-        valuesOverPoints: this.valuesOverPoints,
-        barOptions: this.barOptions,
-        lineOptions: this.lineOptions,
-        axisOptions: this.axisOptions,
-        maxLegendPoints: this.maxLegendPoints,
-        maxSlices: this.maxSlices,
+        data: state.data,
+        tooltipOptions: props.tooltipOptions,
+        valuesOverPoints: props.valuesOverPoints,
+        barOptions: props.barOptions,
+        lineOptions: props.lineOptions,
+        axisOptions: props.axisOptions,
+        maxLegendPoints: props.maxLegendPoints,
+        maxSlices: props.maxSlices,
       };
 
       const options = Object.assign(
         baseOptions,
-        this.type === "heatmap" ? heatMapOptions : chartOptions
+        props.type === "heatmap" ? heatMapOptions : chartOptions
       );
 
-      this.chart = new Chart(`#${this.id}`, options);
-    },
+      state.chart = new Chart(`#${props.id}`, options);
+    }
 
-    export() {
-      this.chart.export();
-    },
+    function exportChart() {
+      state.chart.export();
+    }
 
-    addDataPoint(label, valueFromEachDataset, index) {
-      this.chart.addDataPoint(label, valueFromEachDataset, index);
-    },
+    function addDataPoint(label, valueFromEachDataset, index) {
+      state.chart.addDataPoint(label, valueFromEachDataset, index);
+    }
 
-    removeDataPoint(index) {
-      this.chart.removeDataPoint(index);
-    },
+    function removeDataPoint(index) {
+      state.chart.removeDataPoint(index);
+    }
 
-    updateDataset(datasetValues, index) {
-      this.chart.updateDataset(datasetValues, index);
-    },
+    function updateDataset(datasetValues, index) {
+      state.chart.updateDataset(datasetValues, index);
+    }
 
-    updateDebounced() {
+    function updateDebounced() {
       if (updateTimer) {
         window.clearTimeout(updateTimer);
         updateTimer = null;
       }
       updateTimer = window.setTimeout(() => {
-        this.update();
+        update();
       }, 1);
-    },
-    update() {
-      const data = {
-        labels: this.labels,
-        datasets: this.dataSets,
-        yMarkers: this.yMarkers,
-        yRegions: this.yRegions,
-      };
-      this.chart.update(data);
-    },
+    }
 
-    unbindWindowEvents() {
-      this.chart.unbindWindowEvents();
-    },
+    function update() {
+      const data = {
+        labels: props.labels,
+        datasets: props.dataSets,
+        yMarkers: props.yMarkers,
+        yRegions: props.yRegions,
+      };
+      state.chart.update(data);
+    }
+
+    function unbindWindowEvents() {
+      state.chart.unbindWindowEvents();
+    }
   },
 };
 </script>

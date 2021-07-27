@@ -1,11 +1,11 @@
 import { Chart } from './components/Charts'
 
-export {
-  Chart as VueFrappe
+Chart.install = (app, options = {}) => {
+  app.component(Chart.name, Chart)
+
+  if (options?.plugins?.length) {
+    Chart.registerGlobalPlugins(options.plugins)
+  }
 }
 
-export default {
-    install (Vue, options) {
-        Vue.component('vue-frappe', Chart)
-    }
-}
+export default Chart
