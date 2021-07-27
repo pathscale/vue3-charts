@@ -9,7 +9,6 @@
     </a>
 </p>
 
-
 [![npm version](https://badge.fury.io/js/%40pathscale%2Fvue3-charts.svg)](https://badge.fury.io/js/%40pathscale%2Fvue3-charts)
 
 This is a simple package to get using Frappe Charts within VueJS
@@ -19,11 +18,12 @@ This is a simple package to get using Frappe Charts within VueJS
 First we need to import and initialize
 
 ```es6
-import VueFrappe from '@pathscale/vue3-charts'
+import Chart from "@pathscale/@pathscale/vue3-charts";
 
 export default {
-  components: {
-    VueFrappe,
+    components: {
+        Chart
+    },
   },
 };
 ```
@@ -32,38 +32,28 @@ Then in our Vue templates:
 
 ```html
 <template>
-    <vue-frappe
-            id="test"
-            :labels="[
-                '12am-3am', '3am-6am', '6am-9am', '9am-12pm',
-                '12pm-3pm', '3pm-6pm', '6pm-9pm', '9pm-12am'
-            ]"
-            title="My Awesome Chart"
-            type="axis-mixed"
-            :height="300"
-            :colors="['purple', '#ffa3ef', 'light-blue']"
-            :dataSets="this.data">
-        </vue-frappe>
+  <chart
+    id="test"
+    title="Monthly Distribution"
+    type="pie"
+    :height="300"
+    :labels="['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']"
+    :colors="['red']"
+    :discrete-domains="false"
+    :data-sets="data"
+  />
 </template>
 <script>
-    export default {
-        data () {
-            return {
-                data: [{
-                    name: "Some Data", chartType: 'bar',
-                    values: [25, 40, 30, 35, 8, 52, 17, -4]
-                },
-                {
-                    name: "Another Set", chartType: 'bar',
-                    values: [25, 50, -10, 15, 18, 32, 27, 14]
-                },
-                {
-                    name: "Yet Another", chartType: 'line',
-                    values: [15, 20, -3, -15, 58, 12, -17, 37]
-                }]
-            }
-        }
-    }
+  export default {
+    name: "ChartShowcase",
+    components: { Chart },
+    setup() {
+      const data = [{ values: [18, 40, 30, 35, 8, 52, 17, -4] }];
+      return {
+        data,
+      };
+    },
+  };
 </script>
 ```
 
