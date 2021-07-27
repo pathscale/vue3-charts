@@ -10,8 +10,8 @@
 </p>
 
 
-[![npm version](https://badge.fury.io/js/vue3-charts.svg)](https://badge.fury.io/js/vue3-charts)
-![npm](https://img.shields.io/npm/dw/vue3-charts)
+[![npm version](https://badge.fury.io/js/@pathscale/vue3-charts.svg)](https://badge.fury.io/js/@pathscale/vue3-charts)
+![npm](https://img.shields.io/npm/dw/@pathscale/vue3-charts)
 
 This is a simple package to get using Frappe Charts within VueJS
 
@@ -20,16 +20,7 @@ This is a simple package to get using Frappe Charts within VueJS
 First we need to import and initialize
 
 ```es6
-import Vue from 'vue'
-import Chart from 'vue3-charts'
-
-Vue.use(Chart)
-```
-
-or use the component directly
-
-```es6
-import { VueFrappe } from 'vue3-charts'
+import VueFrappe from '@pathscale/vue3-charts'
 
 export default {
   components: {
